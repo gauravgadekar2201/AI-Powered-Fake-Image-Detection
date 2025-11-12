@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Image Fake Detection System</title>
+    <link rel="stylesheet" href="/style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <!-- Futuristic Splash Screen -->
+    <div id="splashScreen" class="splash-screen">
+        <div class="splash-bg">
+            <div class="neural-network">
+                <div class="node"></div>
+                <div class="node"></div>
+                <div class="node"></div>
+                <div class="node"></div>
+                <div class="node"></div>
+                <div class="connection"></div>
+                <div class="connection"></div>
+                <div class="connection"></div>
+                <div class="connection"></div>
+            </div>
+        </div>
+        <div class="splash-content">
+            <div class="logo-container">
+                <div class="logo-icon"><i class="fas fa-search"></i></div>
+                <h1 class="logo-text">AI VISION</h1>
+                <p class="logo-subtitle">FAKE DETECTION SYSTEM</p>
+            </div>
+            <div class="loading-container">
+                <div class="loading-text">INITIALIZING NEURAL NETWORKS</div>
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progressFill"></div>
+                </div>
+                <div class="loading-percentage" id="loadingPercentage">0%</div>
+            </div>
+            <div class="system-status">
+                <div class="status-line" id="status1">► Loading AI Models...</div>
+                <div class="status-line" id="status2">► Calibrating Detection Algorithms...</div>
+                <div class="status-line" id="status3">► Optimizing Neural Pathways...</div>
+                <div class="status-line" id="status4">► System Ready</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Application -->
+    <div id="mainApp" class="main-app" style="display: none;">
+        <!-- Header -->
+        <header class="header">
+            <div class="header-content">
+                <div class="brand">
+                    <span class="brand-icon"><i class="fas fa-search"></i></span>
+                    <span class="brand-text">AI VISION</span>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Container -->
+        <div class="container">
+            <div class="hero-section">
+                <h1 class="hero-title">
+                    <span class="gradient-text">Advanced AI</span>
+                    <br>Image Authentication
+                </h1>
+                <p class="hero-subtitle">
+                    Powered by deep neural networks with 90%+ accuracy
+                </p>
+            </div>
+
+            <!-- Upload Section -->
+            <div class="upload-section">
+                <form id="uploadForm" enctype="multipart/form-data">
+                    <div class="upload-card" id="uploadArea">
+                        <div class="upload-content">
+                            <div class="upload-icon-container">
+                                <div class="upload-icon"><i class="fas fa-question"></i></div>
+                                <div class="scan-line"></div>
+                            </div>
+                            <h3 class="upload-title">Drop Image for Analysis</h3>
+                            <p class="upload-description">
+                                Drag & drop your image here or 
+                                <span class="browse-link" id="browseLink">browse files</span>
+                            </p>
+                            <input type="file" id="imageFile" name="file" accept="image/*" hidden>
+                            <div class="supported-formats">
+                                Supports: JPG, PNG, WEBP, GIF
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Model Selection Options -->
+                    <div class="model-options">
+                        <div class="model-selector-group">
+                            <div class="selector-card">
+                                <div class="selector-header">
+                                    <span class="selector-icon"><i class="fas fa-brain"></i></span>
+                                    <span class="selector-title">Detection Mode</span>
+                                </div>
+                                <select id="modelType" class="model-select">
+                                    <option value="auto">Auto-Detect (Smart)</option>
+                                    <option value="face">Face Detection (FaceNet)</option>
+                                    <option value="building">Building Detection</option>
+                                    <option value="nature">Nature Detection</option>
+                                </select>
+                                <p class="selector-description">AI automatically selects the best model for your image</p>
+                            </div>
+                        </div>
+                        
+                        <div class="ensemble-toggle-group">
+                            <label class="toggle-label">
+                                <input type="checkbox" id="ensembleMode" class="toggle-checkbox">
+                                <span class="toggle-slider"></span>
+                                <div class="toggle-content">
+                                    <div class="toggle-title">
+                                        <span class="toggle-icon"><i class="fas fa-rocket"></i></span>
+                                        <span class="toggle-text-main">Ensemble Mode</span>
+                                    </div>
+                                    <p class="toggle-description">Run all 3 AI models simultaneously for maximum accuracy and consensus-based results</p>
+                                </div>
+                            </label>
+                           
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Preview Section -->
+            <div id="preview" class="preview-section" style="display: none;">
+                <div class="preview-card">
+                    <div class="preview-header">
+                        <h3>Image Preview</h3>
+                        <button id="removeImage" class="remove-btn">✕</button>
+                    </div>
+                    <div class="preview-container">
+                        <img id="previewImage" alt="Preview">
+                        <div class="preview-overlay">
+                            <div class="scan-effect"></div>
+                        </div>
+                    </div>
+                    <div class="preview-actions">
+                        <button id="analyzeBtn" class="analyze-btn">
+                            <span class="btn-icon"><i class="fas fa-bolt"></i></span>
+                            Analyze with AI
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Loading Section -->
+            <div id="loading" class="loading-section" style="display: none;">
+                <div class="loading-card">
+                    <div class="ai-thinking">
+                        <svg class="spinner-icon" viewBox="0 0 50 50">
+                            <circle class="spinner-path" cx="25" cy="25" r="20" fill="none" stroke-width="4"></circle>
+                        </svg>
+                        <div class="thinking-waves">
+                            <div class="wave"></div>
+                            <div class="wave"></div>
+                            <div class="wave"></div>
+                        </div>
+                    </div>
+                    <h3 class="loading-title">AI Analysis in Progress</h3>
+                    <p class="loading-subtitle">Deep neural networks are examining your image...</p>
+                    <div class="analysis-steps">
+                        <div class="step active" id="step1">Feature Extraction</div>
+                        <div class="step" id="step2">Pattern Recognition</div>
+                        <div class="step" id="step3">Classification</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Results Section - Single Model -->
+            <div id="result" class="result-section" style="display: none;">
+                <div class="result-card">
+                    <!-- Model Used Indicator -->
+                    <div class="model-used-banner" id="modelUsedBanner">
+                        <span class="model-icon" id="modelIcon">🤖</span>
+                        <span class="model-text" id="modelText">Analyzed by: Auto-Detect</span>
+                    </div>
+                    
+                    <div class="result-header">
+                        <div class="result-badge" id="resultBadge"></div>
+                        <h3 class="result-title" id="resultTitle"></h3>
+                    </div>
+                    <div class="result-content">
+                        <div class="confidence-container">
+                            <div class="confidence-label">Confidence Level</div>
+                            <div class="confidence-bar-container">
+                                <div class="confidence-bar">
+                                    <div class="confidence-fill" id="confidenceFill"></div>
+                                </div>
+                                <span class="confidence-value" id="confidenceText"></span>
+                            </div>
+                        </div>
+                        <div class="result-description" id="resultDescription"></div>
+                        <div class="result-actions">
+                            <button class="action-btn secondary" id="analyzeAnother">
+                                <i class="fas fa-redo"></i> Analyze Another
+                            </button>
+                            <button class="action-btn primary" id="downloadReport">
+                                <i class="fas fa-download"></i> Download Report
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Explanation Section (Single Model) -->
+                <div id="explanationSection" class="explanation-section" style="display: none; opacity: 0; transform: translateY(20px); transition: all 0.5s ease;">
+                    <div class="explanation-card">
+                        <div id="explanationText"></div>
+                        <div class="heatmap-container">
+                            <img id="heatmapImage" alt="Heat Map" style="display: none;" />
+                            <div class="heatmap-legend">
+                                <span class="legend-label">Heat Map Legend:</span>
+                                <div class="legend-gradient"></div>
+                                <div class="legend-labels">
+                                    <span>Low Influence</span>
+                                    <span>High Influence</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Ensemble Results Section -->
+            <div id="ensembleResult" class="result-section" style="display: none;">
+                <div class="result-card ensemble-card">
+                    <div class="ensemble-header">
+                        <h2 class="ensemble-title">🚀 Ensemble Analysis</h2>
+                        <p class="ensemble-subtitle">All 3 models analyzed your image</p>
+                    </div>
+                    
+                    <div class="ensemble-models">
+                        <!-- FaceNet Result -->
+                        <div class="ensemble-model-result" id="ensembleFace">
+                            <div class="model-name">
+                                <span class="model-emoji">👤</span>
+                                <span>FaceNet</span>
+                            </div>
+                            <div class="model-confidence-bar">
+                                <div class="model-bar" id="ensembleFaceBar"></div>
+                            </div>
+                            <div class="model-prediction" id="ensembleFaceText"></div>
+                        </div>
+                        
+                        <!-- Buildings Result -->
+                        <div class="ensemble-model-result" id="ensembleBuilding">
+                            <div class="model-name">
+                                <span class="model-emoji">🏢</span>
+                                <span>Buildings</span>
+                            </div>
+                            <div class="model-confidence-bar">
+                                <div class="model-bar" id="ensembleBuildingBar"></div>
+                            </div>
+                            <div class="model-prediction" id="ensembleBuildingText"></div>
+                        </div>
+                        
+                        <!-- Nature Result -->
+                        <div class="ensemble-model-result" id="ensembleNature">
+                            <div class="model-name">
+                                <span class="model-emoji">🌲</span>
+                                <span>Nature</span>
+                            </div>
+                            <div class="model-confidence-bar">
+                                <div class="model-bar" id="ensembleNatureBar"></div>
+                            </div>
+                            <div class="model-prediction" id="ensembleNatureText"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="consensus-section">
+                        <h3 class="consensus-title"><i class="fas fa-chart-bar"></i> Consensus</h3>
+                        <div class="consensus-result">
+                            <div class="consensus-badge" id="consensusBadge"></div>
+                            <h4 class="consensus-prediction" id="consensusPrediction"></h4>
+                            <p class="consensus-details">
+                                <span id="consensusConfidence"></span>
+                                <span id="consensusAgreement"></span>
+                            </p>
+                        </div>
+                    </div>
+                    
+                    <div class="result-actions">
+                        <button class="action-btn secondary" id="analyzeAnotherEnsemble">
+                            <i class="fas fa-redo"></i> Analyze Another
+                        </button>
+                        <button class="action-btn primary" id="downloadReportEnsemble">
+                            <i class="fas fa-download"></i> Download Full Report
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Ensemble Explanations Section -->
+                <div id="ensembleExplanationSection" class="ensemble-explanation-section" style="display: none;"></div>
+            </div>
+
+            <!-- Features Section -->
+            <div id="features" class="features-section">
+                <div class="features-grid">
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-bolt"></i>
+                        </div>
+                        <h3 class="feature-title">Lightning Fast</h3>
+                        <p class="feature-description">Instant analysis powered by advanced AI models</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-bullseye"></i>
+                        </div>
+                        <h3 class="feature-title">High Accuracy</h3>
+                        <p class="feature-description">Reliable detection across diverse image sources and types</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-shield-alt"></i>
+                        </div>
+                        <h3 class="feature-title">Secure & Private</h3>
+                        <p class="feature-description">Your images are processed securely and not stored</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <p>&copy; 2025 AI Vision System.</p>
+        </footer>
+    </div>
+
+    <!-- Load jsPDF library before our script -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="/script.js"></script>
+</body>
+</html>
